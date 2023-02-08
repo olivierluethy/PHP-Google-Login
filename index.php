@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -25,6 +24,7 @@ if (isset($_GET['code'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,6 +32,7 @@ if (isset($_GET['code'])) {
     <link rel="stylesheet" href="style.css">
     <title>Google Login</title>
 </head>
+
 <body>
     <div class="container">
         <?php
@@ -46,7 +47,33 @@ if (isset($_GET['code'])) {
           
             $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
-          
+        
+            // Check if the user is already in the database
+            try {
+                $conn = new PDO("mysql:host=localhost;dbname=habasch", "root", "");
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $query = "SELECT email FROM users WHERE email = :email";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+                $user = $stmt->fetch();
+                } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+                }
+                        // If the user is not in the database, add them
+        if (!$user) {
+            try {
+                $query = "INSERT INTO users (name, email) VALUES (:name, :email)";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+        }
+
+        
             echo '<div class="user-info">';
                 echo '<img src="' . $profileImageUrl . '" class="user-image" />';
                 echo '<div class="user-details">';
@@ -58,8 +85,9 @@ if (isset($_GET['code'])) {
         } else {
             $login_url = $client->createAuthUrl();
             echo '<a href="' . $login_url . '" class="login-button">Login with Google</a>';
-        }
+        }        
         ?>
     </div>
-    </body>
+</body>
+
 </html>
