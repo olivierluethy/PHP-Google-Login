@@ -41,9 +41,9 @@ php -S localhost:8000
 9. Access the application in your browser at ```http://localhost:8000```.
 
 ## Common Errors and Solutions
-Missing dependencies: If you get an error related to missing classes, make sure you have installed the dependencies using Composer.
-Undefined index: If you get an error related to undefined index in $_GET['code'], make sure that you have granted access to your Google account and the authorization code is being passed in the URL.
-Redirect URI mismatch: If you get an error related to redirect URI mismatch, make sure that the redirect URI in your OAuth client ID configuration in Google API Console matches the one in index.php.
+<strong>Missing dependencies:</strong><br>If you get an error related to missing classes, make sure you have installed the dependencies using Composer.<br><br>
+<strong>Undefined index:</strong><br>If you get an error related to undefined index in $_GET['code'], make sure that you have granted access to your Google account and the authorization code is being passed in the URL.<br><br>
+<strong>Redirect URI mismatch:</strong><br>If you get an error related to redirect URI mismatch, make sure that the redirect URI in your OAuth client ID configuration in Google API Console matches the one in index.php.
 
 ## Troubleshooting
 If you face any issues, feel free to create an issue in this repository or ask for help in the comments section.
